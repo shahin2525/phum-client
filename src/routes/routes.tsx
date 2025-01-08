@@ -3,7 +3,7 @@ import App from "../App";
 
 import Login from "../pages/Login";
 import Register from "../pages/Register";
-import { adminPaths } from "./adminRoutes";
+import { adminRoutes } from "./adminRoutesPaths";
 
 const router = createBrowserRouter([
   {
@@ -13,26 +13,9 @@ const router = createBrowserRouter([
   {
     path: "/admin",
     element: <App></App>,
-    children: adminPaths,
+    children: adminRoutes,
   },
-  // {
-  //   path: "/admin2",
-  //   element: <AdminLayout></AdminLayout>,
-  //   children: [
-  //     {
-  //       index: true,
-  //       element: <AdminDashboard></AdminDashboard>,
-  //     },
-  //     {
-  //       path: "dashboard",
-  //       element: <AdminDashboard></AdminDashboard>,
-  //     },
-  //     {
-  //       path: "create-faculty",
-  //       element: <CreateFaculty></CreateFaculty>,
-  //     },
-  //   ],
-  // },
+
   {
     path: "/login",
     element: <Login></Login>,
@@ -41,19 +24,5 @@ const router = createBrowserRouter([
     path: "/register",
     element: <Register></Register>,
   },
-  // {
-  //   path: "/admin-layout",
-  //   element: <AdminLayout></AdminLayout>,
-  //   children: [
-  //     {
-  //       path: "create-faculty",
-  //       element: <CreateFaculty></CreateFaculty>,
-  //     },
-  //     {
-  //       path: "create-student",
-  //       element: <CreateStudent></CreateStudent>,
-  //     },
-  //   ],
-  // },
 ]);
 export default router;

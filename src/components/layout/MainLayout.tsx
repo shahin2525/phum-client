@@ -1,49 +1,37 @@
-import { Layout, Menu, MenuProps } from "antd";
+import { Layout, Menu } from "antd";
 import { Outlet } from "react-router-dom";
-// import {
-//   UploadOutlined,
-//   UserOutlined,
-//   VideoCameraOutlined,
-// } from "@ant-design/icons";
-// import { createElement } from "react";
+import { adminSideVarItems } from "../../routes/adminRoutesPaths";
+
 const { Header, Content, Footer, Sider } = Layout;
 
-const items: MenuProps["items"] = [
-  // UserOutlined,
-  // VideoCameraOutlined,
-  // UploadOutlined,
-  // UserOutlined,
-  {
-    key: "1",
-    label: "dashboard",
-  },
-  {
-    key: "2",
-    label: "profile",
-  },
-  {
-    key: "3",
-    label: "user",
-    children: [
-      {
-        key: "11",
-        label: "dashboard",
-      },
-      {
-        key: "21",
-        label: "profile",
-      },
-    ],
-  },
-];
-//
-// .map((icon, index) => ({
-//   key: String(index + 1),
-//   icon: createElement(icon),
-//   label: `nav ${index + 1}`,
-// }));
-//
+// const items: MenuProps["items"] = [
+//   {
+//     key: "Dashboard",
+//     label: <NavLink to="/admin/dashboard">Dashboard</NavLink>,
+//   },
+
+//   {
+//     key: "User Management",
+//     label: "User Management",
+//     children: [
+//       {
+//         key: "Create Admin",
+//         label: <NavLink to="/admin/create-admin">Create Admin</NavLink>,
+//       },
+//       {
+//         key: "Create Faculty",
+//         label: <NavLink to="/admin/create-faculty">Create Faculty</NavLink>,
+//       },
+//       {
+//         key: "Create Student",
+//         label: <NavLink to="/admin/create-student">Create Student</NavLink>,
+//       },
+//     ],
+//   },
+// ];
+
 const MainLayout = () => {
+  console.log(adminSideVarItems);
   return (
     <Layout style={{ height: "100vh" }}>
       <Sider
@@ -74,7 +62,7 @@ const MainLayout = () => {
           theme="dark"
           mode="inline"
           defaultSelectedKeys={["4"]}
-          items={items}
+          items={adminSideVarItems}
         />
       </Sider>
       <Layout>
