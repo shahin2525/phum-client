@@ -1,11 +1,6 @@
 import { ReactNode } from "react";
+import { TUserRoute } from "../types";
 
-type TUserRoute = {
-  name: string;
-  path?: string;
-  element?: ReactNode;
-  children?: TUserRoute[];
-};
 type TRoute = {
   path: string;
   element: ReactNode;

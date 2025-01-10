@@ -1,8 +1,11 @@
-import { Layout, Menu } from "antd";
+import { Layout } from "antd";
 import { Outlet } from "react-router-dom";
-import { adminSideVarItems } from "../../routes/adminRoutesPaths";
+import SideBar from "./SideBar";
+// import { sideBarItesGenerator } from "../../utils/sidebarItemsGenerator";
+// import { adminPaths } from "../../routes/adminRoutesPaths";
+// import { adminSideVarItems } from "../../routes/adminRoutesPaths";
 
-const { Header, Content, Footer, Sider } = Layout;
+const { Header, Content } = Layout;
 
 // const items: MenuProps["items"] = [
 //   {
@@ -31,40 +34,10 @@ const { Header, Content, Footer, Sider } = Layout;
 // ];
 
 const MainLayout = () => {
-  console.log(adminSideVarItems);
+  // console.log(adminSideVarItems);
   return (
     <Layout style={{ height: "100vh" }}>
-      <Sider
-        breakpoint="lg"
-        collapsedWidth="0"
-        onBreakpoint={(broken) => {
-          console.log(broken);
-        }}
-        onCollapse={(collapsed, type) => {
-          console.log(collapsed, type);
-        }}
-      >
-        <div
-          style={{
-            color: "white",
-
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            fontWeight: "bold",
-            fontSize: "25px",
-            height: "4rem",
-          }}
-        >
-          PH-University
-        </div>
-        <Menu
-          theme="dark"
-          mode="inline"
-          defaultSelectedKeys={["4"]}
-          items={adminSideVarItems}
-        />
-      </Sider>
+      <SideBar></SideBar>
       <Layout>
         <Header style={{ padding: 0 }} />
         <Content style={{ margin: "24px 16px 0" }}>
@@ -78,9 +51,6 @@ const MainLayout = () => {
             <Outlet></Outlet>
           </div>
         </Content>
-        <Footer style={{ textAlign: "center" }}>
-          Ant Design ©{new Date().getFullYear()} Created by Ant UED
-        </Footer>
       </Layout>
     </Layout>
   );
