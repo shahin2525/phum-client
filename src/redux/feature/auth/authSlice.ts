@@ -1,23 +1,62 @@
+// import { createSlice } from "@reduxjs/toolkit";
+// import { RootState } from "../../store";
+// export type TUser = {
+//   userId: string;
+//   role: string;
+//   iat: number;
+//   exp: number;
+// };
+// type TInitialState = {
+//   user: null | TUser;
+//   token: null | string;
+// };
+
+// const initialState: TInitialState = {
+//   user: null,
+//   token: null,
+// };
+// const authSlice = createSlice({
+//   name: "auth",
+//   initialState: initialState,
+//   reducers: {
+//     setUser: (state, action) => {
+//       const { user, token } = action.payload;
+//       state.user = user;
+//       state.token = token;
+//     },
+//     logout: (state) => {
+//       state.user = null;
+//       state.token = null;
+//     },
+//   },
+// });
+
+// export const { setUser, logout } = authSlice.actions;
+// export default authSlice.reducer;
+// export const currentToken = (state: RootState) => state.auth.token;
+// export const currentUser = (state: RootState) => state.auth.token;
 import { createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../../store";
-
-type TInitialState = {
-  user: null | object;
-  token: null | string;
-};
 export type TUser = {
   userId: string;
   role: string;
   iat: number;
   exp: number;
 };
-const initialState: TInitialState = {
+
+type TAuthState = {
+  user: null | TUser;
+  token: null | string;
+};
+
+const initialState: TAuthState = {
   user: null,
   token: null,
 };
+
 const authSlice = createSlice({
   name: "auth",
-  initialState: initialState,
+  initialState,
   reducers: {
     setUser: (state, action) => {
       const { user, token } = action.payload;
@@ -32,6 +71,8 @@ const authSlice = createSlice({
 });
 
 export const { setUser, logout } = authSlice.actions;
+
 export default authSlice.reducer;
-export const currentToken = (state: RootState) => state.auth.token;
-export const currentUser = (state: RootState) => state.auth.token;
+
+export const selectCurrentToken = (state: RootState) => state.auth.token;
+export const selectCurrentUser = (state: RootState) => state.auth.user;
