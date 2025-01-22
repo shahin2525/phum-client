@@ -30,9 +30,8 @@ const baseQueryWithRefreshToken: BaseQueryFn<
   FetchBaseQueryError
 > = async (args, api, extraOptions) => {
   let result = await baseQuery(args, api, extraOptions);
-  if (result?.error && result.error.status === 404) {
-    console.log("user not found");
-    toast.error("user not found");
+  if (result?.error?.status === 404) {
+    toast.error(result.error.data.message);
   }
   // console.log(result);
   if (result?.error && result.error.status === 401) {
