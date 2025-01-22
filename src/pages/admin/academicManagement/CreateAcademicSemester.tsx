@@ -7,6 +7,7 @@ import { nameOptions } from "../../../constants/semester";
 import { monthOptions } from "../../../constants/global";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { academicSemesterSchema } from "../../../schemas/academicManagement.schemas";
 /*
 'Autumn',
   'Summer',
@@ -20,13 +21,6 @@ const yearOptions = [0, 1, 2, 3, 4].map((number) => ({
   value: String(currentYear + number),
   label: String(currentYear + number),
 }));
-
-const academicSemesterSchema = z.object({
-  name: z.string({ required_error: "name is required" }),
-  year: z.string({ required_error: "year is required" }),
-  startMonth: z.string({ required_error: "startMonth is required" }),
-  endMonth: z.string({ required_error: "endMonth is required" }),
-});
 
 const CreateAcademicSemester = () => {
   const onsubmit: SubmitHandler<FieldValues> = (data) => {
