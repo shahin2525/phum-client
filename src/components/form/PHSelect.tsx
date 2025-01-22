@@ -11,14 +11,15 @@ const PHSelect = ({ label, name, options }: TPHSelect) => {
   return (
     <Controller
       name={name}
-      render={({ field }) => (
+      render={({ field, fieldState: { error } }) => (
         <Form.Item label={label}>
           <Select
+            size="large"
             {...field}
             style={{ width: "100%" }}
-            // onChange={handleChange}
             options={options}
           />
+          {error && <small style={{ color: "red" }}>{error.message}</small>}
         </Form.Item>
       )}
     />
