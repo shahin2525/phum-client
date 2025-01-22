@@ -6,14 +6,10 @@ import PHSelect from "../../../components/form/PHSelect";
 import { nameOptions } from "../../../constants/semester";
 import { monthOptions } from "../../../constants/global";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
+
 import { academicSemesterSchema } from "../../../schemas/academicManagement.schemas";
-/*
-'Autumn',
-  'Summer',
-  'Fall',
-  ['01', '02', '03'];
-*/
+import { useCreateSemesterMutation } from "../../../redux/feature/admin/academicManagement.api";
+import { toast } from "sonner";
 
 const currentYear = new Date().getFullYear();
 
@@ -23,7 +19,8 @@ const yearOptions = [0, 1, 2, 3, 4].map((number) => ({
 }));
 
 const CreateAcademicSemester = () => {
-  const onsubmit: SubmitHandler<FieldValues> = (data) => {
+  const [addSemester] = useCreateSemesterMutation();
+  const onsubmit: SubmitHandler<FieldValues> = async (data) => {
     // console.log("data", Number(data.name) - 1);
     const name = nameOptions[Number(data?.name) - 1]?.label;
     const code = nameOptions[Number(data?.name) - 1]?.value;
@@ -38,6 +35,13 @@ const CreateAcademicSemester = () => {
       startMonth,
       endMonth,
     };
+    try {
+      const res = await addSemester(semesterData);
+      console.log(res);
+    } catch (error) {
+      toast.error("something went wrong");
+    }
+
     console.log(semesterData);
   };
   return (
