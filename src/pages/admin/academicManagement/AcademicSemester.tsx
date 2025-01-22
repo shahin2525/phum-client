@@ -6,7 +6,9 @@ export type TTableData = Pick<
   "_id" | "name" | "year" | "startMonth" | "endMonth"
 >;
 const AcademicSemester = () => {
-  const { data: semesterData } = useGetAllSemesterQuery(undefined);
+  const { data: semesterData } = useGetAllSemesterQuery([
+    { name: "year", value: "2025" },
+  ]);
   console.log("academic semester", semesterData);
 
   const columns: TableColumnsType<TTableData> = [

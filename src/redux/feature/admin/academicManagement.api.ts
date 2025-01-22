@@ -6,11 +6,16 @@ import { baseApi } from "../../api/baseApi";
 const academicManagementApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getAllSemester: builder.query({
-      query: (userInfo) => ({
-        url: "/academic-semesters",
-        method: "GET",
-        body: userInfo,
-      }),
+      query: (args) => {
+        const params = new URLSearchParams();
+        params.append(args[0].name, args[0].value);
+
+        return {
+          url: "/academic-semesters",
+          method: "GET",
+          params: params,
+        };
+      },
       transformResponse: (response: TResponseRedux<TAcademicSemester[]>) => {
         console.log("inside redux", response);
 
