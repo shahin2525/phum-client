@@ -1,4 +1,4 @@
-import { Table, TableColumnsType, TableProps } from "antd";
+import { Button, Table, TableColumnsType, TableProps } from "antd";
 import { useGetAllSemesterQuery } from "../../../redux/feature/admin/academicManagement.api";
 import { TAcademicSemester } from "../../../types/academicManagement.type";
 import { useState } from "react";
@@ -60,6 +60,18 @@ const AcademicSemester = () => {
       title: "EndMonth",
       dataIndex: "endMonth",
       key: "endMonth",
+    },
+    {
+      title: "Action",
+      dataIndex: "endMonth",
+      key: "x",
+      render: () => {
+        return (
+          <div>
+            <Button>update</Button>
+          </div>
+        );
+      },
     },
   ];
 
