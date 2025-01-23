@@ -2,13 +2,14 @@ import { Table, TableColumnsType, TableProps } from "antd";
 import { useGetAllSemesterQuery } from "../../../redux/feature/admin/academicManagement.api";
 import { TAcademicSemester } from "../../../types/academicManagement.type";
 import { useState } from "react";
+import { TQueryParam } from "../../../types";
 export type TTableData = Pick<
   TAcademicSemester,
-  "_id" | "name" | "year" | "startMonth" | "endMonth"
+  "name" | "year" | "startMonth" | "endMonth"
 >;
 const AcademicSemester = () => {
-  const [param, setParam] = useState([]);
-  const { data: semesterData } = useGetAllSemesterQuery(param);
+  const [param, setParam] = useState<TQueryParam[] | undefined>(undefined);
+  const { data: semesterData, isFetching } = useGetAllSemesterQuery(param);
 
   const columns: TableColumnsType<TTableData> = [
     {
@@ -78,7 +79,7 @@ const AcademicSemester = () => {
     sorter,
     extra
   ) => {
-    const queryParams = [];
+    const queryParams: TQueryParam[] = [];
     if (extra.action === "filter") {
       filters.name?.forEach((item) =>
         queryParams.push({ name: "name", value: item })
@@ -93,6 +94,7 @@ const AcademicSemester = () => {
 
   return (
     <Table
+      loading={isFetching}
       columns={columns}
       dataSource={tableData}
       onChange={onChange}
