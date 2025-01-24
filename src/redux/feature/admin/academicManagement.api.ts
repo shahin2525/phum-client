@@ -1,4 +1,4 @@
-import { TQueryParam, TResponse, TResponseRedux } from "../../../types";
+import { TQueryParam, TResponseRedux } from "../../../types";
 import { TAcademicSemester } from "../../../types/academicManagement.type";
 
 import { baseApi } from "../../api/baseApi";

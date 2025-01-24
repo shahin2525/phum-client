@@ -31,9 +31,14 @@ const PHForm = ({
     userConfig["resolver"] = resolver;
   }
   const method = useForm(userConfig);
+  const submit = (data: FieldValues) => {
+    method.reset();
+    onSubmit(data);
+  };
+
   return (
     <FormProvider {...method}>
-      <Form layout="vertical" onFinish={method.handleSubmit(onSubmit)}>
+      <Form layout="vertical" onFinish={method.handleSubmit(submit)}>
         {children}
       </Form>
     </FormProvider>
