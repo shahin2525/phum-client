@@ -40,6 +40,10 @@ const CreateStudent = () => {
   };
   const onSubmit = (data: FieldValues) => {
     console.log(data);
+    const formData = new FormData();
+
+    formData.append("data", JSON.stringify(data));
+    console.log(Object.fromEntries(formData));
   };
 
   return (
