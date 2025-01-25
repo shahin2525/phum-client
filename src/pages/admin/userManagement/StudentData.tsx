@@ -1,18 +1,19 @@
-import { Button, Table, TableColumnsType, TableProps } from "antd";
+import { Button, Space, Table, TableColumnsType, TableProps } from "antd";
 
 import { useState } from "react";
 import { TQueryParam, TStudent } from "../../../types";
 import { useGetAllStudentsQuery } from "../../../redux/feature/admin/userManagement.api";
 // import { TStudent } from "../../../types/userManagement.type";
-export type TTableData = Pick<TStudent, "name" | "_id" | "id">;
+export type TTableData = Pick<TStudent, "fullName" | "_id" | "id">;
 const StudentData = () => {
   const [param, setParam] = useState<TQueryParam[] | undefined>(undefined);
   const { data: studentData, isFetching } = useGetAllStudentsQuery(param);
+  console.log(studentData);
 
   const columns: TableColumnsType<TTableData> = [
     {
       title: "Name",
-      dataIndex: "name",
+      dataIndex: "fullName",
       key: "name",
     },
 
@@ -23,29 +24,26 @@ const StudentData = () => {
     },
     {
       title: "Action",
-      dataIndex: "endMonth",
+
       key: "x",
       render: () => {
         return (
-          <div>
+          <Space>
             <Button>details</Button>
             <Button>update</Button>
             <Button>Block</Button>
-          </div>
+          </Space>
         );
       },
+      width: "1%",
     },
   ];
 
-  const tableData = semesterData?.data!.map(
-    ({ _id, name, year, startMonth, endMonth }) => ({
-      key: _id,
-      name,
-      year,
-      startMonth,
-      endMonth,
-    })
-  );
+  const tableData = studentData?.data?.map(({ _id, fullName, id }) => ({
+    key: _id,
+    fullName,
+    id,
+  }));
 
   const onChange: TableProps<TTableData>["onChange"] = (
     pagination,
