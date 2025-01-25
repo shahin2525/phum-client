@@ -9,13 +9,17 @@ import {
   useGetAllAcademicDepartmentQuery,
   useGetAllSemesterQuery,
 } from "../../../redux/feature/admin/academicManagement.api";
+import { useCreateStudentMutation } from "../../../redux/feature/admin/userManagement.api";
+
 const CreateStudent = () => {
+  const [addStudent, { data, error }] = useCreateStudentMutation();
+  console.log(data, error);
   const { data: sData, isLoading: sIsLoading } =
     useGetAllSemesterQuery(undefined);
-  const { data: dData, isLoading: dIsLoading } =
-    useGetAllAcademicDepartmentQuery(undefined, { skip: sIsLoading });
+  const { data: dData } = useGetAllAcademicDepartmentQuery(undefined, {
+    skip: sIsLoading,
+  });
   // console.log(data?.data);
-  console.log(dData);
 
   const semesterOptions = sData?.data?.map((semester) => ({
     value: semester._id,
@@ -76,7 +80,7 @@ const CreateStudent = () => {
     // dateOfBirth: "1990-01-01",
     bloogGroup: "A+",
     // contact info
-    email: "student2@gmail.com",
+    email: "student4@gmail.com",
     contactNo: "1235678",
     emergencyContactNo: "987-654-3210",
 
@@ -105,11 +109,17 @@ const CreateStudent = () => {
   };
 
   const onSubmit = (data: FieldValues) => {
-    console.log(data);
-    // const formData = new FormData();
+    // console.log(data);
+    const studentData = {
+      password: "programming1234",
+      student: data,
+    };
+    // console.log(studentData);
+    const formData = new FormData();
 
-    // formData.append("data", JSON.stringify(data));
-    // console.log(Object.fromEntries(formData));
+    formData.append("data", JSON.stringify(studentData));
+    addStudent(formData);
+    console.log(Object.fromEntries(formData));
   };
 
   return (
