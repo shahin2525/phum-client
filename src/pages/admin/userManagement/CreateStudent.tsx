@@ -5,9 +5,26 @@ import { FieldValues } from "react-hook-form";
 import PHSelect from "../../../components/form/PHSelect";
 import { bloodGroupOptions, genderOptions } from "../../../constants/global";
 import PHDatePicker from "../../../components/form/PHDatePicker";
-import { useGetAllSemesterQuery } from "../../../redux/feature/admin/academicManagement.api";
-
+import {
+  useGetAllAcademicDepartmentQuery,
+  useGetAllSemesterQuery,
+} from "../../../redux/feature/admin/academicManagement.api";
 const CreateStudent = () => {
+  const { data: sData, isLoading: sIsLoading } =
+    useGetAllSemesterQuery(undefined);
+  const { data: dData, isLoading: dIsLoading } =
+    useGetAllAcademicDepartmentQuery(undefined, { skip: sIsLoading });
+  // console.log(data?.data);
+  console.log(dData);
+
+  const semesterOptions = sData?.data?.map((semester) => ({
+    value: semester._id,
+    label: `${semester.name} ${semester.year}`,
+  }));
+  const departmentOptions = dData?.data?.map((department) => ({
+    value: department._id,
+    label: `${department.name}`,
+  }));
   const studentDummyData = {
     // personal
     password: "student123",
@@ -83,17 +100,9 @@ const CreateStudent = () => {
       address: "789 Pine St, Villageton",
     },
     // academic info
-    admissionSemester: "65b0104110b74fcbd7a25d92",
-    academicDepartment: "65b00fb010b74fcbd7a25d8e",
+    // admissionSemester: "65b0104110b74fcbd7a25d92",
+    // academicDepartment: "65b00fb010b74fcbd7a25d8e",
   };
-
-  const { data, isLoading } = useGetAllSemesterQuery(undefined);
-  // console.log(data?.data);
-
-  const semesterOptions = data?.data?.map((semester) => ({
-    value: semester._id,
-    label: `${semester.name} ${semester.year}`,
-  }));
 
   const onSubmit = (data: FieldValues) => {
     console.log(data);
@@ -211,7 +220,7 @@ const CreateStudent = () => {
             </Col>
           </Row>
           <Divider>Local Guardian</Divider>
-          <Row gutter={4}>
+          <Row gutter={6}>
             <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
               <PHInput type="text" name="localGuardian.name" label="Name" />
             </Col>
@@ -231,13 +240,21 @@ const CreateStudent = () => {
             </Col>
           </Row>
           <Divider>Academic Info</Divider>
-          <Row>
+          <Row gutter={6}>
             <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
               <PHSelect
                 options={semesterOptions}
                 name="admissionSemester"
                 label="Admission Semester"
-                disabled={isLoading}
+                disabled={sIsLoading}
+              />
+            </Col>
+            <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
+              <PHSelect
+                options={departmentOptions}
+                name="academicDepartment"
+                label="Academic Department"
+                disabled={sIsLoading}
               />
             </Col>
           </Row>
