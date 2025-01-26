@@ -1,13 +1,38 @@
-import { Button, Space, Table, TableColumnsType, TableProps } from "antd";
+import {
+  Button,
+  Pagination,
+  Space,
+  Table,
+  TableColumnsType,
+  TableProps,
+} from "antd";
 
 import { useState } from "react";
 import { TQueryParam, TStudent } from "../../../types";
 import { useGetAllStudentsQuery } from "../../../redux/feature/admin/userManagement.api";
 // import { TStudent } from "../../../types/userManagement.type";
-export type TTableData = Pick<TStudent, "fullName" | "_id" | "id">;
+export type TTableData = Pick<TStudent, "fullName" | "id">;
 const StudentData = () => {
-  const [param, setParam] = useState<TQueryParam[] | undefined>(undefined);
-  const { data: studentData, isFetching } = useGetAllStudentsQuery(param);
+  const [params, setParams] = useState<TQueryParam[]>([]);
+  const [page, setPage] = useState(1);
+  const { data: studentData, isFetching } = useGetAllStudentsQuery([
+    { name: "page", value: page },
+    { name: "sort", value: "id" },
+    { name: "limit", value: "3" },
+    ...params,
+  ]);
+  const metaData = studentData?.mete;
+  // const [params, setParams] = useState<TQueryParam[]>([]);
+  // const [page, setPage] = useState(1);
+  // const {
+  //   data: studentData,
+  //   isLoading,
+  //   isFetching,
+  // } = useGetAllStudentsQuery([
+  //   { name: 'page', value: page },
+  //   { name: 'sort', value: 'id' },
+  //   ...params,
+  // ]);
   console.log(studentData);
 
   const columns: TableColumnsType<TTableData> = [
@@ -61,17 +86,26 @@ const StudentData = () => {
       );
     }
 
-    setParam(queryParams);
+    setParams(queryParams);
   };
 
   return (
-    <Table
-      loading={isFetching}
-      columns={columns}
-      dataSource={tableData}
-      onChange={onChange}
-      showSorterTooltip={{ target: "sorter-icon" }}
-    />
+    <>
+      <Table
+        loading={isFetching}
+        columns={columns}
+        dataSource={tableData}
+        onChange={onChange}
+        showSorterTooltip={{ target: "sorter-icon" }}
+        pagination={false}
+      />
+      <Pagination
+        current={page}
+        onChange={(value) => setPage(value)}
+        pageSize={metaData?.limit}
+        total={metaData?.total}
+      />
+    </>
   );
 };
 
