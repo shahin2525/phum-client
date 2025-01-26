@@ -10,29 +10,23 @@ import {
 import { useState } from "react";
 import { TQueryParam, TStudent } from "../../../types";
 import { useGetAllStudentsQuery } from "../../../redux/feature/admin/userManagement.api";
+import { Link } from "react-router-dom";
 // import { TStudent } from "../../../types/userManagement.type";
-export type TTableData = Pick<TStudent, "fullName" | "id">;
+export type TTableData = Pick<
+  TStudent,
+  "fullName" | "id" | "email" | "contactNo"
+>;
 const StudentData = () => {
   const [params, setParams] = useState<TQueryParam[]>([]);
   const [page, setPage] = useState(1);
   const { data: studentData, isFetching } = useGetAllStudentsQuery([
     { name: "page", value: page },
     { name: "sort", value: "id" },
-    { name: "limit", value: "3" },
+    // { name: "limit", value: "3" },
     ...params,
   ]);
   const metaData = studentData?.mete;
-  // const [params, setParams] = useState<TQueryParam[]>([]);
-  // const [page, setPage] = useState(1);
-  // const {
-  //   data: studentData,
-  //   isLoading,
-  //   isFetching,
-  // } = useGetAllStudentsQuery([
-  //   { name: 'page', value: page },
-  //   { name: 'sort', value: 'id' },
-  //   ...params,
-  // ]);
+
   console.log(studentData);
 
   const columns: TableColumnsType<TTableData> = [
@@ -43,18 +37,31 @@ const StudentData = () => {
     },
 
     {
-      title: "roll",
+      title: "Roll",
       dataIndex: "id",
       key: "id",
+    },
+    {
+      title: "Email",
+      dataIndex: "email",
+      key: "email",
+    },
+    {
+      title: "Contact",
+      dataIndex: "contactNo",
+      key: "contactNo",
     },
     {
       title: "Action",
 
       key: "x",
-      render: () => {
+      render: (item) => {
         return (
           <Space>
-            <Button>details</Button>
+            <Link to={`/admin/student-data/${item.key}`}>
+              {" "}
+              <Button>details</Button>
+            </Link>
             <Button>update</Button>
             <Button>Block</Button>
           </Space>
@@ -64,11 +71,15 @@ const StudentData = () => {
     },
   ];
 
-  const tableData = studentData?.data?.map(({ _id, fullName, id }) => ({
-    key: _id,
-    fullName,
-    id,
-  }));
+  const tableData = studentData?.data?.map(
+    ({ _id, fullName, id, email, contactNo }) => ({
+      key: _id,
+      fullName,
+      id,
+      email,
+      contactNo,
+    })
+  );
 
   const onChange: TableProps<TTableData>["onChange"] = (
     pagination,
