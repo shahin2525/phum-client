@@ -2,14 +2,14 @@ import { ReactNode } from "react";
 
 export type TSideBarItem =
   | {
-      key: string;
+      key: string | undefined;
       label: ReactNode;
       children?: TSideBarItem[];
     }
   | undefined;
 
 export type TUserRoute = {
-  name: string;
+  name?: string;
   path?: string;
   element?: ReactNode;
   children?: TUserRoute[];

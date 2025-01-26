@@ -1,5 +1,5 @@
 import { Button, Table, TableColumnsType, TableProps } from "antd";
-import { useGetAllSemesterQuery } from "../../../redux/feature/admin/academicManagement.api";
+import { useGetAllAcademicSemesterQuery } from "../../../redux/feature/admin/academicManagement.api";
 import { TAcademicSemester } from "../../../types/academicManagement.type";
 import { useState } from "react";
 import { TQueryParam } from "../../../types";
@@ -9,7 +9,8 @@ export type TTableData = Pick<
 >;
 const AcademicSemester = () => {
   const [param, setParam] = useState<TQueryParam[] | undefined>(undefined);
-  const { data: semesterData, isFetching } = useGetAllSemesterQuery(param);
+  const { data: semesterData, isFetching } =
+    useGetAllAcademicSemesterQuery(param);
 
   const columns: TableColumnsType<TTableData> = [
     {
