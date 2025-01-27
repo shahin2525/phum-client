@@ -2,31 +2,27 @@ import {
   Button,
   Dropdown,
   MenuProps,
-  Pagination,
   Space,
   Table,
   TableColumnsType,
-  TableProps,
   Tag,
 } from "antd";
-
-import { TQueryParam } from "../../../types";
 
 import { useGetAllSemesterRegistrationQuery } from "../../../redux/feature/admin/courseManagement.api";
 import { TSemesterRegistration } from "../../../types/courseManagement.type";
 import moment from "moment";
 import { FieldValues } from "react-hook-form";
+import { useState } from "react";
 
 export type TTableData = Pick<
   TSemesterRegistration,
   "status" | "startDate" | "endDate"
 >;
 const RegisterSemesterData = () => {
+  const [semesterId, setSemesterId] = useState("");
   const { data: registerSemesterData, isFetching } =
     useGetAllSemesterRegistrationQuery(undefined);
-  //   const metaData = studentData?.mete;
 
-  console.log(registerSemesterData);
   //   "UPCOMING", "ONGOING", "ENDED"
   const items: MenuProps["items"] = [
     {
@@ -43,7 +39,8 @@ const RegisterSemesterData = () => {
     },
   ];
   const handleStatusDropdown = (data: FieldValues) => {
-    console.log(data);
+    console.log("", data.key);
+    console.log("semesterId", semesterId);
   };
 
   const menuProps = {
@@ -90,14 +87,12 @@ const RegisterSemesterData = () => {
       title: "Action",
 
       key: "x",
-      render: () => {
+      render: (item) => {
         return (
-          <Dropdown menu={menuProps}>
-            <a onClick={(e) => e.preventDefault()}>
-              <Space>
-                <Button>update</Button>
-              </Space>
-            </a>
+          <Dropdown menu={menuProps} trigger={["click"]}>
+            <Space>
+              <Button onClick={() => setSemesterId(item.key)}>update</Button>
+            </Space>
           </Dropdown>
         );
       },
