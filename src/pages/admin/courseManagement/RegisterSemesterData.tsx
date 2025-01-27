@@ -8,11 +8,15 @@ import {
   Tag,
 } from "antd";
 
-import { useGetAllSemesterRegistrationQuery } from "../../../redux/feature/admin/courseManagement.api";
+import {
+  useGetAllSemesterRegistrationQuery,
+  useUpdateSemesterRegistrationMutation,
+} from "../../../redux/feature/admin/courseManagement.api";
 import { TSemesterRegistration } from "../../../types/courseManagement.type";
 import moment from "moment";
 import { FieldValues } from "react-hook-form";
 import { useState } from "react";
+import { toast } from "sonner";
 
 export type TTableData = Pick<
   TSemesterRegistration,
@@ -20,6 +24,7 @@ export type TTableData = Pick<
 >;
 const RegisterSemesterData = () => {
   const [semesterId, setSemesterId] = useState("");
+  const [updateSemesterRegistration] = useUpdateSemesterRegistrationMutation();
   const { data: registerSemesterData, isFetching } =
     useGetAllSemesterRegistrationQuery(undefined);
 
@@ -39,8 +44,17 @@ const RegisterSemesterData = () => {
     },
   ];
   const handleStatusDropdown = (data: FieldValues) => {
-    console.log("", data.key);
-    console.log("semesterId", semesterId);
+    const toastId = toast.loading("updating");
+    // console.log("", data.key);
+    // console.log("semesterId", semesterId);
+    const updateSemesterData = {
+      id: semesterId,
+      data: {
+        status: data.key,
+      },
+    };
+    updateSemesterRegistration(updateSemesterData);
+    toast.success("semester updated successfully", { id: toastId });
   };
 
   const menuProps = {
