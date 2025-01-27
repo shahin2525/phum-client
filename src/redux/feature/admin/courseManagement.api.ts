@@ -31,6 +31,7 @@ const courseManagementApi = baseApi.injectEndpoints({
         };
       },
     }),
+
     //
     createSemesterRegistration: builder.mutation({
       query: (data) => ({
@@ -41,6 +42,7 @@ const courseManagementApi = baseApi.injectEndpoints({
       invalidatesTags: ["semester"],
     }),
     //
+
     updateSemesterRegistration: builder.mutation({
       query: (args) => ({
         url: `/semester-registrations/${args.id}`,
@@ -49,6 +51,54 @@ const courseManagementApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["semester"],
     }),
+
+    //
+    getAllCourse: builder.query({
+      query: (args) => {
+        const params = new URLSearchParams();
+        if (args) {
+          args.forEach((item: TQueryParam) => {
+            params.append(item.name, item.value as string);
+          });
+        }
+
+        return {
+          url: "/courses",
+          method: "GET",
+          params: params,
+        };
+      },
+      providesTags: ["course"],
+      transformResponse: (response: TResponseRedux<any[]>) => {
+        // console.log("inside redux", response);
+
+        return {
+          data: response?.data,
+          mete: response?.meta,
+        };
+      },
+    }),
+
+    //
+    createCourse: builder.mutation({
+      query: (data) => ({
+        url: "/courses/create-course",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["course"],
+    }),
+    //
+    //  createSemesterRegistration: builder.mutation({
+    //   query: (data) => ({
+    //     url: "/semester-registrations/create-semester-registration",
+    //     method: "POST",
+    //     body: data,
+    //   }),
+    //   invalidatesTags: ["semester"],
+    // }),
+
+    //
   }),
 });
 
@@ -56,4 +106,6 @@ export const {
   useCreateSemesterRegistrationMutation,
   useGetAllSemesterRegistrationQuery,
   useUpdateSemesterRegistrationMutation,
+  useCreateCourseMutation,
+  useGetAllCourseQuery,
 } = courseManagementApi;
