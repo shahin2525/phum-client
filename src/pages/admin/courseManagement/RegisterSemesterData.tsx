@@ -1,5 +1,7 @@
 import {
   Button,
+  Dropdown,
+  MenuProps,
   Pagination,
   Space,
   Table,
@@ -13,6 +15,7 @@ import { TQueryParam } from "../../../types";
 import { useGetAllSemesterRegistrationQuery } from "../../../redux/feature/admin/courseManagement.api";
 import { TSemesterRegistration } from "../../../types/courseManagement.type";
 import moment from "moment";
+import { FieldValues } from "react-hook-form";
 
 export type TTableData = Pick<
   TSemesterRegistration,
@@ -24,7 +27,29 @@ const RegisterSemesterData = () => {
   //   const metaData = studentData?.mete;
 
   console.log(registerSemesterData);
+  //   "UPCOMING", "ONGOING", "ENDED"
+  const items: MenuProps["items"] = [
+    {
+      key: "UPCOMING",
+      label: "UPCOMING",
+    },
+    {
+      key: "ONGOING",
+      label: "ONGOING",
+    },
+    {
+      key: "ENDED",
+      label: "ENDED",
+    },
+  ];
+  const handleStatusDropdown = (data: FieldValues) => {
+    console.log(data);
+  };
 
+  const menuProps = {
+    items,
+    onClick: handleStatusDropdown,
+  };
   const columns: TableColumnsType<TTableData> = [
     {
       title: "Name",
@@ -36,8 +61,6 @@ const RegisterSemesterData = () => {
       title: "Status",
       dataIndex: "status",
       key: "status",
-
-      //   "UPCOMING", "ONGOING", "ENDED"
 
       render: (item) => {
         let color;
@@ -69,10 +92,13 @@ const RegisterSemesterData = () => {
       key: "x",
       render: () => {
         return (
-          <Space>
-            <Button>update</Button>
-            <Button>Block</Button>
-          </Space>
+          <Dropdown menu={menuProps}>
+            <a onClick={(e) => e.preventDefault()}>
+              <Space>
+                <Button>update</Button>
+              </Space>
+            </a>
+          </Dropdown>
         );
       },
       width: "1%",
@@ -90,24 +116,24 @@ const RegisterSemesterData = () => {
     })
   );
 
-  const onChange: TableProps<TTableData>["onChange"] = (
-    pagination,
-    filters,
-    sorter,
-    extra
-  ) => {
-    const queryParams: TQueryParam[] = [];
-    if (extra.action === "filter") {
-      filters.name?.forEach((item) =>
-        queryParams.push({ name: "name", value: item })
-      );
-      filters.year?.forEach((item) =>
-        queryParams.push({ name: "year", value: item })
-      );
-    }
+  //   const onChange: TableProps<TTableData>["onChange"] = (
+  //     pagination,
+  //     filters,
+  //     sorter,
+  //     extra
+  //   ) => {
+  //     const queryParams: TQueryParam[] = [];
+  //     if (extra.action === "filter") {
+  //       filters.name?.forEach((item) =>
+  //         queryParams.push({ name: "name", value: item })
+  //       );
+  //       filters.year?.forEach((item) =>
+  //         queryParams.push({ name: "year", value: item })
+  //       );
+  //     }
 
-    // setParams(queryParams);
-  };
+  //     // setParams(queryParams);
+  //   };
 
   return (
     <>
@@ -115,8 +141,8 @@ const RegisterSemesterData = () => {
         loading={isFetching}
         columns={columns}
         dataSource={tableData}
-        onChange={onChange}
-        showSorterTooltip={{ target: "sorter-icon" }}
+        // onChange={onChange}
+        // showSorterTooltip={{ target: "sorter-icon" }}
         pagination={false}
       />
       {/* <Pagination
