@@ -5,28 +5,20 @@ import {
   Table,
   TableColumnsType,
   TableProps,
+  Tag,
 } from "antd";
 
-import { useState } from "react";
-import { TQueryParam, TStudent } from "../../../types";
-import { useGetAllStudentsQuery } from "../../../redux/feature/admin/userManagement.api";
-import { Link } from "react-router-dom";
+import { TQueryParam } from "../../../types";
+
 import { useGetAllSemesterRegistrationQuery } from "../../../redux/feature/admin/courseManagement.api";
 import { TSemesterRegistration } from "../../../types/courseManagement.type";
-// import { TStudent } from "../../../types/userManagement.type";
+import moment from "moment";
+
 export type TTableData = Pick<
   TSemesterRegistration,
-  "academicSemester" | "status" | "startDate" | "endDate"
+  "status" | "startDate" | "endDate"
 >;
 const RegisterSemesterData = () => {
-  //   const [params, setParams] = useState<TQueryParam[]>([]);
-  //   const [page, setPage] = useState(1);
-  //   const { data: registerSemesterData, isFetching } = useGetAllStudentsQuery([
-  //     { name: "page", value: page },
-  //     { name: "sort", value: "id" },
-  //     // { name: "limit", value: "3" },
-  //     ...params,
-  //   ]);
   const { data: registerSemesterData, isFetching } =
     useGetAllSemesterRegistrationQuery(undefined);
   //   const metaData = studentData?.mete;
@@ -44,6 +36,22 @@ const RegisterSemesterData = () => {
       title: "Status",
       dataIndex: "status",
       key: "status",
+
+      //   "UPCOMING", "ONGOING", "ENDED"
+
+      render: (item) => {
+        let color;
+        if (item === "UPCOMING") {
+          color = "green";
+        }
+        if (item === "ONGOING") {
+          color = "yellow";
+        }
+        if (item === "ENDED") {
+          color = "red";
+        }
+        return <Tag color={color}>{item}</Tag>;
+      },
     },
     {
       title: "Start Data",
@@ -77,8 +85,8 @@ const RegisterSemesterData = () => {
       name: `${academicSemester?.name} ${academicSemester?.year}`,
 
       status,
-      endDate,
-      startDate,
+      endDate: moment(new Date(endDate)).format("MMMM"),
+      startDate: moment(new Date(startDate)).format("MMMM"),
     })
   );
 
