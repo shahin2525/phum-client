@@ -1,5 +1,8 @@
 import { TQueryParam, TResponseRedux } from "../../../types";
-import { TSemesterRegistration } from "../../../types/courseManagement.type";
+import {
+  TCourse,
+  TSemesterRegistration,
+} from "../../../types/courseManagement.type";
 import { baseApi } from "../../api/baseApi";
 
 const courseManagementApi = baseApi.injectEndpoints({
@@ -69,7 +72,7 @@ const courseManagementApi = baseApi.injectEndpoints({
         };
       },
       providesTags: ["course"],
-      transformResponse: (response: TResponseRedux<any[]>) => {
+      transformResponse: (response: TResponseRedux<TCourse[]>) => {
         // console.log("inside redux", response);
 
         return {
@@ -89,14 +92,6 @@ const courseManagementApi = baseApi.injectEndpoints({
       invalidatesTags: ["course"],
     }),
     //
-    //  createSemesterRegistration: builder.mutation({
-    //   query: (data) => ({
-    //     url: "/semester-registrations/create-semester-registration",
-    //     method: "POST",
-    //     body: data,
-    //   }),
-    //   invalidatesTags: ["semester"],
-    // }),
 
     //
   }),
