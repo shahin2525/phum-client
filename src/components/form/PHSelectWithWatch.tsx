@@ -9,7 +9,13 @@ type TPHSelect = {
   options: { value: string; label: string; disabled?: boolean }[] | undefined;
 };
 
-const PHSelect = ({ label, name, options, disabled, mode }: TPHSelect) => {
+const PHSelectWithWatch = ({
+  label,
+  name,
+  options,
+  disabled,
+  mode,
+}: TPHSelect) => {
   const { control } = useFormContext();
   const inputValue = useWatch({
     control,
@@ -36,4 +42,4 @@ const PHSelect = ({ label, name, options, disabled, mode }: TPHSelect) => {
   );
 };
 
-export default PHSelect;
+export default PHSelectWithWatch;
