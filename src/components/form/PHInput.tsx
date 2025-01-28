@@ -4,9 +4,10 @@ type TInput = {
   type: string;
   name: string;
   label?: string;
+  disabled?: boolean;
 };
 
-const PHInput = ({ type, name, label }: TInput) => {
+const PHInput = ({ type, name, label, disabled }: TInput) => {
   //   const { register } = useFormContext();
   return (
     <div style={{ marginBottom: "16px" }}>
@@ -15,7 +16,13 @@ const PHInput = ({ type, name, label }: TInput) => {
         name={name}
         render={({ field }) => (
           <Form.Item label={label}>
-            <Input {...field} type={type} id={name} size="large" />
+            <Input
+              {...field}
+              type={type}
+              id={name}
+              size="large"
+              disabled={disabled}
+            />
           </Form.Item>
         )}
       />
