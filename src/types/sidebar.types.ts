@@ -1,10 +1,17 @@
 import { ReactNode } from "react";
 
-export type TSideBarItem =
+// export type TSideBarItem =
+//   | {
+//       key: string | undefined;
+//       label: ReactNode;
+//       children?: TSideBarItem[] | undefined;
+//     }
+//   | undefined;
+export type TSidebarItem =
   | {
-      key: string | undefined;
+      key: string;
       label: ReactNode;
-      children?: TSideBarItem[];
+      children?: TSidebarItem[];
     }
   | undefined;
 

@@ -4,7 +4,12 @@ import { adminPaths } from "../../routes/adminRoutesPaths";
 import { facultyPaths } from "../../routes/facultyRoutesPaths";
 import { studentPaths } from "../../routes/studentRoutesPaths";
 import { useAppSelector } from "../../redux/hook";
-import { selectCurrentUser } from "../../redux/feature/auth/authSlice";
+import {
+  selectCurrentToken,
+  selectCurrentUser,
+  TUser,
+} from "../../redux/feature/auth/authSlice";
+import { verifyToken } from "../../utils/verifyToken";
 
 const { Sider } = Layout;
 
@@ -15,7 +20,14 @@ const SideBar = () => {
     STUDENT: "student",
   };
 
-  const user = useAppSelector(selectCurrentUser);
+  // const user = useAppSelector(selectCurrentUser);
+  const token = useAppSelector(selectCurrentToken);
+
+  let user;
+
+  if (token) {
+    user = verifyToken(token) as TUser;
+  }
 
   let sidebarItems;
   switch (user!.role) {
