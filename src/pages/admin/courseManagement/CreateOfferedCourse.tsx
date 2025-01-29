@@ -3,7 +3,6 @@ import PHForm from "../../../components/form/PHForm";
 import { FieldValues, SubmitHandler } from "react-hook-form";
 
 import {
-  useCreateAcademicDepartmentMutation,
   useGetAllAcademicDepartmentQuery,
   useGetAllAcademicFacultiesQuery,
   useGetAllAcademicSemesterQuery,
@@ -21,7 +20,8 @@ import {
 import { useGetAllFacultyQuery } from "../../../redux/feature/admin/userManagement.api";
 
 const CreateOfferedCourse = () => {
-  const [id, setId] = useState(" ");
+  const [courseId, setCourseId] = useState(" ");
+  console.log(courseId);
   // const [addSemester] = useCreateSemesterMutation();
   const { data: sRegistrationData } =
     useGetAllSemesterRegistrationQuery(undefined);
@@ -112,13 +112,18 @@ const CreateOfferedCourse = () => {
             label="Academic Department"
             options={aDepartmentOptions}
           />
-          <PHSelect name="course" label="Course" options={courseOptions} />
           <PHSelectWithWatch
-            onValueChange={setId}
+            onValueChange={setCourseId}
+            name="course"
+            label="Course"
+            options={courseOptions}
+          />
+          <PHSelect
+            disabled={!courseId}
             label="Faculty"
             name="faculty"
             options={facultyOptions}
-          ></PHSelectWithWatch>
+          ></PHSelect>
           <PHInput type="text" name="section" label="Section" />
           <PHInput type="text" name="maxCapacity" label="Max Capacity" />
 

@@ -12,7 +12,12 @@ const PHTimePicker = ({ name, label }: TDateProps) => {
         name={name}
         render={({ field }) => (
           <Form.Item label={label}>
-            <TimePicker {...field} size="large" style={{ width: "100%" }} />
+            <TimePicker
+              format="HH:mm"
+              {...field}
+              size="large"
+              style={{ width: "100%" }}
+            />
           </Form.Item>
         )}
       />
