@@ -5,7 +5,7 @@ import { FieldValues, SubmitHandler } from "react-hook-form";
 import {
   useGetAllAcademicDepartmentQuery,
   useGetAllAcademicFacultiesQuery,
-  useGetAllAcademicSemesterQuery,
+  // useGetAllAcademicSemesterQuery,
 } from "../../../redux/feature/admin/academicManagement.api";
 import PHInput from "../../../components/form/PHInput";
 import PHSelectWithWatch from "../../../components/form/PHSelectWithWatch";
@@ -16,30 +16,34 @@ import { daysOptions } from "../../../constants/global";
 import {
   useGetAllCourseQuery,
   useGetAllSemesterRegistrationQuery,
+  useGetCourseFacultiesQuery,
 } from "../../../redux/feature/admin/courseManagement.api";
-import { useGetAllFacultyQuery } from "../../../redux/feature/admin/userManagement.api";
+// import { useGetAllFacultyQuery } from "../../../redux/feature/admin/userManagement.api";
 
 const CreateOfferedCourse = () => {
-  const [courseId, setCourseId] = useState(" ");
-  console.log(courseId);
+  const [courseId, setCourseId] = useState("");
+  // console.log(courseId);
   // const [addSemester] = useCreateSemesterMutation();
   const { data: sRegistrationData } =
     useGetAllSemesterRegistrationQuery(undefined);
-  console.log(sRegistrationData);
-  const { data: aSemesterData } = useGetAllAcademicSemesterQuery(undefined);
+  // console.log(sRegistrationData);
+  // const { data: aSemesterData } = useGetAllAcademicSemesterQuery(undefined);
   const { data: aFacultyData } = useGetAllAcademicFacultiesQuery(undefined);
   const { data: aDepartmentData } = useGetAllAcademicDepartmentQuery(undefined);
-  const { data: faculty } = useGetAllFacultyQuery(undefined);
+  // const { data: faculty } = useGetAllFacultyQuery(undefined);
   const { data: course } = useGetAllCourseQuery(undefined);
   // console.log(aSemesterData);
+  const { data: courseFacultiesData, isFetching: fetchingFaculties } =
+    useGetCourseFacultiesQuery(courseId, { skip: !courseId });
+
   const sRegistrationOptions = sRegistrationData?.data?.map((item) => ({
     value: item._id,
     label: `${item.academicSemester?.name} ${item.academicSemester?.year}`,
   }));
-  const aSemesterOptions = aSemesterData?.data?.map((semester) => ({
-    value: semester._id,
-    label: `${semester.name} ${semester.year}`,
-  }));
+  // const aSemesterOptions = aSemesterData?.data?.map((semester) => ({
+  //   value: semester._id,
+  //   label: `${semester.name} ${semester.year}`,
+  // }));
   const aFacultyOptions = aFacultyData?.data?.map((item) => ({
     value: item._id,
     label: item.name,
@@ -49,15 +53,21 @@ const CreateOfferedCourse = () => {
     value: item._id,
     label: item.name,
   }));
-  const facultyOptions = faculty?.data?.map((item) => ({
-    value: item._id,
-    label: item.fullName,
-  }));
+  // const facultyOptions = faculty?.data?.map((item) => ({
+  //   value: item._id,
+  //   label: item.fullName,
+  // }));
   const courseOptions = course?.data?.map((item) => ({
     value: item._id,
     label: item.title,
   }));
 
+  const courseFacultiesOptions = courseFacultiesData?.data?.faculties?.map(
+    (item) => ({
+      value: item._id,
+      label: item.fullName,
+    })
+  );
   const onsubmit: SubmitHandler<FieldValues> = async (data) => {
     console.log(data);
     // console.log("data", Number(data.name) - 1);
@@ -119,10 +129,10 @@ const CreateOfferedCourse = () => {
             options={courseOptions}
           />
           <PHSelect
-            disabled={!courseId}
+            disabled={!courseId || fetchingFaculties}
             label="Faculty"
             name="faculty"
-            options={facultyOptions}
+            options={courseFacultiesOptions}
           ></PHSelect>
           <PHInput type="text" name="section" label="Section" />
           <PHInput type="text" name="maxCapacity" label="Max Capacity" />
